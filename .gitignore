@@ -5,3 +5,6 @@ node_modules
 /generated/prisma
 
 /generated/prisma
+
+auth-back/node-modules
+auth-front/node-modules
