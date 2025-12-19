@@ -2,7 +2,7 @@ export class User {
   constructor(
     private readonly _id: string,
     private _login: string,
-    private _passwordHash: string,
+    private _password: string,
     private _roles: string[],
     private _status: string,
   ) { }
@@ -16,7 +16,7 @@ export class User {
   }
 
   get passwordHash(): string {
-    return this._passwordHash;
+    return this._password;
   }
 
   get roles(): string[] {
@@ -28,6 +28,6 @@ export class User {
   }
 
   changePassword(newHash: string) {
-    this._passwordHash = newHash;
+    this._password = newHash;
   }
 }
