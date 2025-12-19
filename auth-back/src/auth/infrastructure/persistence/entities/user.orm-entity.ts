@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
-@Entity('users')
+@Entity("users")
 export class UserOrmEntity {
   @PrimaryColumn()
   id: string;
@@ -9,11 +9,11 @@ export class UserOrmEntity {
   login: string;
 
   @Column()
-  passwordHash: string;
+  password: string;
 
   @Column()
-  role: string[];
+  roles: string[];
 
-  @Column({ default: 'open' })
+  @Column({ default: "open" })
   status: string;
 }
