@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { User } from "src/auth/domain/entities/user.entity";
 import { UserMapper } from "../mappers/user.mapper";
 import { UserRepositoryPort } from "src/auth/domain/ports/repositories/user.repository.port";
@@ -8,11 +8,11 @@ import { PrismaService } from "../../../../prisma/prisma.service";
 export class PrismaUserRepository implements UserRepositoryPort {
     constructor(private readonly prisma: PrismaService) { }
 
-    async findByLogin(login: string): Promise<User | null> {
+    async findByLogin(login: string): Promise<User> {
         const userRow = await this.prisma.user.findUnique({
             where: { login: login },
         });
-        if (!userRow) return null;
+        if (!userRow) throw new NotFoundException(`Can't found user with this login: ${login}`);
         return UserMapper.toDomain(userRow);
     }
 
