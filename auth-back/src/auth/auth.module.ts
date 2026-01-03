@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { BcryptHashingService } from './infrastructure/adapters/bcrypt.hashing.service';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { JwtTokenService } from './infrastructure/adapters/jwt.token.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserRepositoryPort } from './domain/ports/repositories/user.repository.port';
 import { PrismaUserRepository } from './infrastructure/persistence/repositories/prisma-user.repository';
 import { TokenServicePort } from './domain/ports/services/token.service.port';
@@ -16,30 +16,39 @@ import { RegisterUseCases } from './application/use-cases/register.use-case';
 @Module({
     imports: [
         ConfigModule,
-        JwtModule.register({}),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService, ConfigService) => ({
+                secret: configService.get('JWT_SECRET'),
+                signOptions: {
+                    expiresIn: configService.get('JWT_EXPIRATION') ?? '1h'
+                },
+            }),
+        }),
     ],
     controllers: [
-      AuthController,
+        AuthController,
     ],
     providers: [
-      LoginUseCase,
-      {
-        provide: HashingServicePort,     
-        useClass: BcryptHashingService, 
-      },
-      {
-          provide: UserRepositoryPort,
-          useClass: PrismaUserRepository,
-      },
-      {
-          provide: TokenServicePort,
-          useClass: JwtTokenService,
-      },
-      LoginUseCase,
-      RefreshTokenUseCase,
-      ValidateTokenUseCase,
-      RegisterUseCases
+        LoginUseCase,
+        {
+            provide: HashingServicePort,
+            useClass: BcryptHashingService,
+        },
+        {
+            provide: UserRepositoryPort,
+            useClass: PrismaUserRepository,
+        },
+        {
+            provide: TokenServicePort,
+            useClass: JwtTokenService,
+        },
+        LoginUseCase,
+        RefreshTokenUseCase,
+        ValidateTokenUseCase,
+        RegisterUseCases
     ],
-  exports: [],
+    exports: [JwtModule],
 })
-export class AuthModule {}
+export class AuthModule { }
