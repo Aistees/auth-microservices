@@ -5,6 +5,8 @@ export class User {
     private _password: string,
     private _roles: string[],
     private _status: string,
+    private _createdAt?: Date,
+    private _updatedAt?: Date
   ) { }
 
   get id(): string {
@@ -25,6 +27,14 @@ export class User {
 
   get status(): string {
     return this._status;
+  }
+
+  get createdAt(): Date | undefined {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date | undefined {
+    return this._updatedAt;
   }
 
   changePassword(newHash: string) {
