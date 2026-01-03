@@ -16,6 +16,13 @@ export class PrismaUserRepository implements UserRepositoryPort {
         return UserMapper.toDomain(userRow);
     }
 
+    async checkIfLoginExists(login: string): Promise<boolean> {
+        const userRow = await this.prisma.user.findUnique({
+            where: { login: login }
+        })
+        return userRow ? true : false;
+    }
+
     async findById(user_id: string): Promise<User | null> {
         const userRow = await this.prisma.user.findUnique({
             where: { id: user_id },

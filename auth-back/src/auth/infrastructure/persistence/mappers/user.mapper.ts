@@ -9,6 +9,8 @@ export class UserMapper {
       ormEntity.password,
       ormEntity.roles,
       ormEntity.status,
+      ormEntity.createdAt,
+      ormEntity.updatedAt
     );
   }
 
@@ -19,6 +21,8 @@ export class UserMapper {
     ormEntity.password = domainEntity.passwordHash;
     ormEntity.roles = domainEntity.roles;
     ormEntity.status = domainEntity.status;
+    ormEntity.createdAt = domainEntity.createdAt;
+    ormEntity.updatedAt = domainEntity.updatedAt
     return ormEntity;
   }
 }

@@ -11,9 +11,15 @@ export class UserOrmEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: "ROLE_USER" })
   roles: string[];
 
   @Column({ default: "open" })
   status: string;
+
+  @Column({ default: Date.now() })
+  createdAt: Date | undefined;
+
+  @Column({ default: Date.now() })
+  updatedAt: Date | undefined;
 }
