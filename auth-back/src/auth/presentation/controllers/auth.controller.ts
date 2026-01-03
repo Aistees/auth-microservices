@@ -16,12 +16,12 @@ import { ValidateTokenQuery } from '../../application/queries/validate-token.que
 import { LoginRequestDto } from '../dtos/login.request.dto';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { AuthResponseDto } from '../dtos/auth-response.dto';
-import { ValidateTokenDto } from '../dtos/validate-token.dto'; 
+import { ValidateTokenDto } from '../dtos/validate-token.dto';
 import { RegisterRequestDto } from '../dtos/register.request.dto';
 import { RegisterCommand } from 'src/auth/application/commands/register.command';
 import { RegisterResponseDto } from 'src/auth/application/dtos/register-response.dto';
 
-@ApiTags('api') 
+@ApiTags('api')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -29,7 +29,7 @@ export class AuthController {
     private readonly refreshUseCase: RefreshTokenUseCase,
     private readonly validateUseCase: ValidateTokenUseCase,
     private readonly registerUseCase: RegisterUseCases,
-  ) {}
+  ) { }
 
   @Post('account')
   @HttpCode(HttpStatus.OK)
@@ -38,16 +38,16 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() body: LoginRequestDto): Promise<AuthResponseDto> {
     const command = new LoginCommand(body.login, body.password);
-    
+
     return this.loginUseCase.execute(command);
   }
 
   @Post('register')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({summary: 'Register user in database'})
-  @ApiResponse({status:201, description: "User created"})
-  async register(@Body() body:RegisterRequestDto): Promise<RegisterResponseDto> {
-    const command = new RegisterCommand(body.login, body.password, body.roles, body.status)
+  @ApiOperation({ summary: 'Register user in database' })
+  @ApiResponse({ status: 201, description: "User created" })
+  async register(@Body() body: RegisterRequestDto): Promise<RegisterResponseDto> {
+    const command = new RegisterCommand(body.login, body.password, body.roles, body.status, body.createdAt, body.updatedAt)
     return this.registerUseCase.execute(command);
   }
 
