@@ -4,5 +4,7 @@ export class RegisterCommand {
         public readonly password: string,
         public readonly roles: string[],
         public readonly status: string,
-    ) {}
+        public readonly createdAt: Date | undefined,
+        public readonly updatedAt: Date | undefined,
+    ) { }
 }
