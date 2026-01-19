@@ -250,7 +250,7 @@ export type UserCreateInput = {
   login: string
   password: string
   roles?: Prisma.UserCreaterolesInput | string[]
-  status: string
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -260,7 +260,7 @@ export type UserUncheckedCreateInput = {
   login: string
   password: string
   roles?: Prisma.UserCreaterolesInput | string[]
-  status: string
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -290,7 +290,7 @@ export type UserCreateManyInput = {
   login: string
   password: string
   roles?: Prisma.UserCreaterolesInput | string[]
-  status: string
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
