@@ -47,7 +47,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register user in database' })
   @ApiResponse({ status: 201, description: "User created" })
   async register(@Body() body: RegisterRequestDto): Promise<RegisterResponseDto> {
-    const command = new RegisterCommand(body.login, body.password, body.roles, body.status, body.createdAt, body.updatedAt)
+    const command = new RegisterCommand(body.login, body.password, body.roles, body.status)
     return this.registerUseCase.execute(command);
   }
 

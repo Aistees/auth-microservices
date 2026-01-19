@@ -5,8 +5,8 @@ export class User {
     private _password: string,
     private _roles: string[],
     private _status: string,
-    private _createdAt?: Date,
-    private _updatedAt?: Date
+    private _createdAt: Date,
+    private _updatedAt: Date
   ) { }
 
   get id(): string {
@@ -29,11 +29,11 @@ export class User {
     return this._status;
   }
 
-  get createdAt(): Date | undefined {
+  get createdAt(): Date {
     return this._createdAt;
   }
 
-  get updatedAt(): Date | undefined {
+  get updatedAt(): Date {
     return this._updatedAt;
   }
 

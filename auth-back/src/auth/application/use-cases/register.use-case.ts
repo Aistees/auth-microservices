@@ -31,8 +31,8 @@ export class RegisterUseCases {
             hashedPassword,
             command.roles,
             command.status,
-            command.createdAt,
-            command.updatedAt,
+            new Date(),
+            new Date()
         )
         await this.userRepo.save(newUser)
         return new RegisterResponseDto(newUser.id, newUser.login, newUser.roles, newUser.createdAt, newUser.updatedAt);

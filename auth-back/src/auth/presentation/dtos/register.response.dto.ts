@@ -1,20 +1,22 @@
-import { IsArray, IsString } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { Expose } from 'class-transformer';
 
 export class RegisterResponseDto {
-    @ApiProperty({ example: "mylogin", description: "The user login" })
-    @IsString()
-    login: string;
+  @Expose()
+  id: string;
 
-    @ApiProperty({ example: "mypassword", description: "The user password" })
-    @IsString()
-    password: string;
+  @Expose()
+  login: string;
 
-    @ApiProperty({ example: "role", description: "role of the user" })
-    @IsArray()
-    roles: string[] = ["ROLE_USER"];
+  @Expose()
+  roles: string[];
 
-    @ApiProperty({ example: "status", description: "status of the user account" })
-    @IsString()
-    status: string = "open";
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
+
+  constructor(partial: Partial<RegisterResponseDto>) {
+    Object.assign(this, partial);
+  }
 }

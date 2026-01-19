@@ -18,8 +18,8 @@ export class UserOrmEntity {
   status: string;
 
   @Column({ default: Date.now() })
-  createdAt: Date | undefined;
+  createdAt: Date ;
 
   @Column({ default: Date.now() })
-  updatedAt: Date | undefined;
+  updatedAt: Date ;
 }

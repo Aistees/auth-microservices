@@ -1,5 +1,5 @@
 export class RegisterResponseDto {
-  constructor(id: string, login: string, roles: string[], createdAt?: Date, updatedAt?: Date) {
+  constructor(id: string, login: string, roles: string[], createdAt: Date, updatedAt: Date) {
     this.id = id;
     this.login = login;
     this.roles = roles;
@@ -9,6 +9,6 @@ export class RegisterResponseDto {
   id: string;
   login: string;
   roles: string[];
-  createdAt: Date | undefined;
-  updatedAt: Date | undefined;
+  createdAt: Date;
+  updatedAt: Date;
 }
