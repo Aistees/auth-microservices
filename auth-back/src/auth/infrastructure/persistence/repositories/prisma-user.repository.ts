@@ -44,15 +44,24 @@ export class PrismaUserRepository implements UserRepositoryPort {
         });
     }
 
-    async update(user_id: string, updatedUser: User): Promise<void> {
-        await this.prisma.user.update({
-            where: { id: user_id },
-            data: {
-                login: updatedUser.login || undefined,
-                password: updatedUser.passwordHash || undefined,
-                roles: updatedUser.roles || undefined,
-                status: updatedUser.status || undefined,
-            },
-        });
+    async update(updatedUser: User): Promise<void> {
+        try {
+            await this.prisma.user.update({
+                where: { id: updatedUser.id },
+                data: {
+                    login: updatedUser.login ?? undefined,
+                    password: updatedUser.passwordHash ?? undefined,
+                    roles: updatedUser.roles ?? undefined,
+                    status: updatedUser.status ?? undefined,
+                    updatedAt: new Date(),
+                },
+            });
+        }
+        catch(error) {
+            if(error.code === "P2025"){
+                throw new NotFoundException(`User with ID ${updatedUser.id} not found`);
+            }
+            throw error;
+        }
     }
 }

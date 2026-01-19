@@ -12,15 +12,20 @@ import { AuthController } from './presentation/controllers/auth.controller';
 import { RefreshTokenUseCase } from './application/use-cases/refresh-token.use-case';
 import { ValidateTokenUseCase } from './application/use-cases/validate-token.use-case';
 import { RegisterUseCases } from './application/use-cases/register.use-case';
+import { GetUserUseCase } from './application/use-cases/get-user.use-case';
+import { UpdateUserUseCase } from './application/use-cases/update-user.use-case';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from '../auth/infrastructure/strategies/jwt.strategy'
 
 @Module({
     imports: [
+        PassportModule,
         ConfigModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (configService, ConfigService) => ({
-                secret: configService.get('JWT_SECRET'),
+                secret: configService.get('JWT_ACCESS_SECRET'),
                 signOptions: {
                     expiresIn: configService.get('JWT_EXPIRATION') ?? '1h'
                 },
@@ -47,7 +52,10 @@ import { RegisterUseCases } from './application/use-cases/register.use-case';
         LoginUseCase,
         RefreshTokenUseCase,
         ValidateTokenUseCase,
-        RegisterUseCases
+        RegisterUseCases,
+        GetUserUseCase,
+        UpdateUserUseCase,
+        JwtStrategy,
     ],
     exports: [JwtModule],
 })

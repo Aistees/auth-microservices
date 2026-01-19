@@ -5,5 +5,5 @@ export abstract class UserRepositoryPort {
   abstract findById(user_id: string): Promise<User | null>;
   abstract checkIfLoginExists(login: string): Promise<boolean>;
   abstract save(user: User): Promise<void>;
-  abstract update(user_id: string, updatedUser: User): Promise<void>;
+  abstract update(updatedUser: User): Promise<void>;
 }

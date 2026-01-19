@@ -37,7 +37,27 @@ export class User {
     return this._updatedAt;
   }
 
+  updateLogin(newLogin: string) {
+    this._login = newLogin;
+    this.refreshUpdatedAt();
+  }
+
+  updateRoles(newRoles: string[]) {
+    this._roles = newRoles;
+    this.refreshUpdatedAt();
+  }
+
+  updateStatus(newStatus: string) {
+    this._status = newStatus;
+    this.refreshUpdatedAt();
+  }
+
+  private refreshUpdatedAt() {
+    this._updatedAt = new Date();
+  }
+
   changePassword(newHash: string) {
     this._password = newHash;
+    this.refreshUpdatedAt();
   }
 }

@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class RegisterRequestDto {
@@ -22,5 +22,6 @@ export class RegisterRequestDto {
 
     @ApiProperty({ example: "status", description: "status of the user account" })
     @IsString()
+    @IsOptional()
     status: string = "open";
 }

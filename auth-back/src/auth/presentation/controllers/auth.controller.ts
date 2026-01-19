@@ -1,11 +1,13 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UnauthorizedException } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Post, Get, HttpCode, HttpStatus, UnauthorizedException, Param, Put, Req, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 // Use Cases
 import { LoginUseCase } from '../../application/use-cases/login.use-case';
 import { RefreshTokenUseCase } from '../../application/use-cases/refresh-token.use-case';
 import { ValidateTokenUseCase } from '../../application/use-cases/validate-token.use-case';
 import { RegisterUseCases } from 'src/auth/application/use-cases/register.use-case';
+import { GetUserUseCase } from 'src/auth/application/use-cases/get-user.use-case';
 
 // Commands & Queries
 import { LoginCommand } from '../../application/commands/login.command';
@@ -20,6 +22,12 @@ import { ValidateTokenDto } from '../dtos/validate-token.dto';
 import { RegisterRequestDto } from '../dtos/register.request.dto';
 import { RegisterCommand } from 'src/auth/application/commands/register.command';
 import { RegisterResponseDto } from 'src/auth/application/dtos/register-response.dto';
+import { GetUserQuery } from 'src/auth/application/queries/get-user.query';
+import { UpdateUserUseCase } from 'src/auth/application/use-cases/update-user.use-case';
+import { UpdateCommand } from 'src/auth/application/commands/update.command';
+import { UpdateUserDto } from '../dtos/update.request.dto';
+import { GetUser } from 'src/shared/get-user.decorator';
+import { DebugJwtAuthGuard } from '../guards/debug-jwt.guard';
 
 @ApiTags('api')
 @Controller('auth')
@@ -29,6 +37,8 @@ export class AuthController {
     private readonly refreshUseCase: RefreshTokenUseCase,
     private readonly validateUseCase: ValidateTokenUseCase,
     private readonly registerUseCase: RegisterUseCases,
+    private readonly getUserUseCase: GetUserUseCase,
+    private readonly updateUseruseCase: UpdateUserUseCase
   ) { }
 
   @Post('account')
@@ -49,6 +59,33 @@ export class AuthController {
   async register(@Body() body: RegisterRequestDto): Promise<RegisterResponseDto> {
     const command = new RegisterCommand(body.login, body.password, body.roles, body.status)
     return this.registerUseCase.execute(command);
+  }
+
+  @Get('register/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get a user by id' })
+  @ApiResponse({ status: 200, description: "User found" })
+  async getById(@Param('id') id: string): Promise<RegisterResponseDto> {
+    const query = new GetUserQuery(id);
+    return this.getUserUseCase.execute(query);
+  }
+
+  @Put('update/:id')
+  @ApiBearerAuth('JwtAuthGuard')
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(DebugJwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: "Update a user profile by id"})
+  @ApiResponse({ status: 200, description:"UserUpdated"})
+  async upddateById(@Param('id') targetId: string, @Body() body: UpdateUserDto, @GetUser('id') requester: string): Promise<RegisterResponseDto> {
+    console.log(requester)
+    const command = new UpdateCommand(
+      targetId,
+      body,
+      requester
+  );
+
+  return this.updateUseruseCase.execute(command);
   }
 
 
