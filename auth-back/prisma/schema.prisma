@@ -17,8 +17,8 @@ model User {
   id String @id @default(uuid())
   login String @unique
   password String
-  roles String[]
-  status String
+  roles String[] @default(["ROLE_USER"])
+  status String @default("open")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
