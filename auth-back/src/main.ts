@@ -12,6 +12,16 @@ async function bootstrap() {
     .setTitle('Auth Microservice')
     .setDescription('The Authentication API based on Clean Architecture')
     .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http', 
+        scheme: 'bearer', 
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT Token',
+        in: 'header',
+    },
+    'JwtAuthGuard'
+  )
     .build();
   
   const document = SwaggerModule.createDocument(app, config);
