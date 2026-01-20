@@ -8,6 +8,8 @@ import { RefreshTokenUseCase } from '../../application/use-cases/refresh-token.u
 import { ValidateTokenUseCase } from '../../application/use-cases/validate-token.use-case';
 import { RegisterUseCases } from 'src/auth/application/use-cases/register.use-case';
 import { GetUserUseCase } from 'src/auth/application/use-cases/get-user.use-case';
+import { GenerateAccessTokenUseCase } from 'src/auth/application/use-cases/generate-access-tokens.use-case';
+import { UpdateUserUseCase } from 'src/auth/application/use-cases/update-user.use-case';
 
 // Commands & Queries
 import { LoginCommand } from '../../application/commands/login.command';
@@ -23,22 +25,23 @@ import { RegisterRequestDto } from '../dtos/register.request.dto';
 import { RegisterCommand } from 'src/auth/application/commands/register.command';
 import { RegisterResponseDto } from 'src/auth/application/dtos/register-response.dto';
 import { GetUserQuery } from 'src/auth/application/queries/get-user.query';
-import { UpdateUserUseCase } from 'src/auth/application/use-cases/update-user.use-case';
 import { UpdateCommand } from 'src/auth/application/commands/update.command';
 import { UpdateUserDto } from '../dtos/update.request.dto';
 import { GetUser } from 'src/shared/get-user.decorator';
 import { DebugJwtAuthGuard } from '../guards/debug-jwt.guard';
+import { RefreshtokenResponseDto } from '../dtos/refresh-token.response.dto';
+
 
 @ApiTags('api')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
-    private readonly refreshUseCase: RefreshTokenUseCase,
     private readonly validateUseCase: ValidateTokenUseCase,
     private readonly registerUseCase: RegisterUseCases,
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly updateUseruseCase: UpdateUserUseCase
+    private readonly updateUseruseCase: UpdateUserUseCase,
+    private readonly generateAccessTokenUseCase: GenerateAccessTokenUseCase
   ) { }
 
   @Post('account')
@@ -92,19 +95,19 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Generate new tokens using a Refresh Token' })
-  @ApiResponse({ status: 200, type: AuthResponseDto })
-  async refresh(@Body() body: RefreshTokenDto): Promise<AuthResponseDto> {
+  @ApiResponse({ status: 200, type: RefreshtokenResponseDto })
+  async refresh(@Body() body: RefreshTokenDto): Promise<RefreshtokenResponseDto> {
     const command = new RefreshTokenCommand(body.refreshToken);
-    return this.refreshUseCase.execute(command);
+    return this.generateAccessTokenUseCase.execute(command.refreshToken);
   }
 
-  @Post('validate')
+  @Post('validate/:token')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Verify if an access token is valid' })
   @ApiResponse({ status: 200, description: 'Token is valid' })
   @ApiResponse({ status: 401, description: 'Token is invalid or expired' })
-  async validate(@Body() body: ValidateTokenDto): Promise<any> {
-    const query = new ValidateTokenQuery(body.token);
+  async validate(@Param('token') token: string): Promise<ValidateTokenDto> {
+    const query = new ValidateTokenQuery(token);
     return this.validateUseCase.execute(query);
   }
 }
