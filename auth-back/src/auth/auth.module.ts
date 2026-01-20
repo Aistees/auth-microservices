@@ -16,6 +16,7 @@ import { GetUserUseCase } from './application/use-cases/get-user.use-case';
 import { UpdateUserUseCase } from './application/use-cases/update-user.use-case';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../auth/infrastructure/strategies/jwt.strategy'
+import { GenerateAccessTokenUseCase } from './application/use-cases/generate-access-tokens.use-case';
 
 @Module({
     imports: [
@@ -56,6 +57,7 @@ import { JwtStrategy } from '../auth/infrastructure/strategies/jwt.strategy'
         GetUserUseCase,
         UpdateUserUseCase,
         JwtStrategy,
+        GenerateAccessTokenUseCase
     ],
     exports: [JwtModule],
 })
