@@ -1,7 +1,7 @@
 export class CreateCinemaCommand {
     constructor(
-        public readonly name: String,
-        public readonly city: String,
-        public readonly address: String
+        public readonly name: string,
+        public readonly city: string,
+        public readonly address: string
     ){}
 }
