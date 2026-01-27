@@ -1,9 +1,9 @@
 export class Cinema {
     constructor(
-      public id: String,
-      public name: String,
-      public city: String,
-      public address: String,
+      public id: string,
+      public name: string,
+      public city: string,
+      public address: string,
       public createdAt: Date,
       public updatedAt: Date,
     ) {}
