@@ -1,4 +1,4 @@
-import { PrismaCinema } from '@prisma/client';
+import { Cinemas as PrismaCinema } from '../../../../generated/prisma/client';
 import { Cinema } from '../../../domain/entities/cinema.entity';
 
 export class CinemaMapper {
@@ -19,6 +19,7 @@ export class CinemaMapper {
       name: domain.name,
       city: domain.city,
       address: domain.address,
+      status: (domain as any).status ?? 'active',
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
     };
