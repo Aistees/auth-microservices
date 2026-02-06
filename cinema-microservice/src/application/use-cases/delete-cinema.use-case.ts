@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { CinemaRepositoryPort } from 'src/domain/ports/cinema.port';
 
+@Injectable()
 export class DeleteCinemaUseCase {
   constructor(private readonly repo: CinemaRepositoryPort) {}
 
