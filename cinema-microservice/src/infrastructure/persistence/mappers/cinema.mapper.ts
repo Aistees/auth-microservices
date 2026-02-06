@@ -1,5 +1,6 @@
-import { Cinemas as PrismaCinema } from '../../../../generated/prisma/client';
 import { Cinema } from '../../../domain/entities/cinema.entity';
+
+type PrismaCinema = any;
 
 export class CinemaMapper {
   static toDomain(raw: PrismaCinema): Cinema {
