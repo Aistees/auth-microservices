@@ -13,5 +13,18 @@ services:
     ports:
       - "5431:5432"
 
+  booking:
+    build:
+      context: ./booking-microservice
+      dockerfile: Dockerfile
+    container_name: booking-microservice
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/booking-microservice?schema=public
+    depends_on:
+      - postgres
+    ports:
+      - "3003:3000"
+
 volumes:
   postgres:
