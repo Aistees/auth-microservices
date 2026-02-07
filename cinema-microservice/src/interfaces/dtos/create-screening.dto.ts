@@ -12,12 +12,12 @@ export class CreateScreeningDto {
   @IsNotEmpty()
   externalFilmId: string;
 
-  @ApiProperty({ example: '2025-12-20T10:00:00Z', description: 'Start time' })
+  @ApiProperty({ example: '20-12-2026 00:00:00', description: 'Start time' })
   @IsDateString()
   @IsNotEmpty()
   startTime: Date;
 
-  @ApiProperty({ example: '2025-12-20T12:00:00Z', description: 'End time' })
+  @ApiProperty({ example: '20-12-2026 00:00:00', description: 'End time' })
   @IsDateString()
   @IsNotEmpty()
   endTime: Date;
