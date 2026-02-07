@@ -8,5 +8,6 @@ export class Screening {
     public price: number,
     public createdAt: Date,
     public updatedAt: Date,
+    public room?: any, // Add room relationship
   ) {}
 }
