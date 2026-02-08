@@ -1,0 +1,18 @@
+model Film {
+  id        String   @id @default(cuid())
+  title     String
+  description String?
+  director  String
+  genre     String
+  duration  Int
+  releaseDate DateTime
+  rating    Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("films")
+}
+
+model PrismaSchema {
+  id String @id
+}
