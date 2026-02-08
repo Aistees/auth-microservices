@@ -23,6 +23,9 @@ import { ListScreeningsUseCase } from './application/use-cases/list-screenings.u
 import { GetScreeningUseCase } from './application/use-cases/get-screening.use-case';
 import { DeleteScreeningUseCase } from './application/use-cases/delete-screening.use-case';
 import { UpdateScreeningUseCase } from './application/use-cases/update-screening.use-case';
+import { GetScreeningsByFilmUseCase } from './application/use-cases/get-screenings-by-film.use-case';
+import { GetScreeningsByRoomUseCase } from './application/use-cases/get-screenings-by-room.use-case';
+import { CheckRoomAvailabilityUseCase } from './application/use-cases/check-room-availability.use-case';
 import { PrismaCinemaRepository } from './infrastructure/persistence/repositories/prisma.cinema.repository';
 import { PrismaRoomRepository } from './infrastructure/persistence/repositories/prisma.room.repository';
 import { PrismaSeatRepository } from './infrastructure/persistence/repositories/prisma.seat.repository';
@@ -37,7 +40,6 @@ import { PrismaService } from './infrastructure/persistence/prisma.service';
   controllers: [CinemaController, RoomController, SeatController, ScreeningController],
   providers: [
     PrismaService,
-    // Cinema Use Cases
     CreateCinemaUseCase,
     ListCinemasUseCase,
     GetCinemaUseCase,
@@ -47,7 +49,6 @@ import { PrismaService } from './infrastructure/persistence/prisma.service';
       provide: CinemaRepositoryPort,
       useClass: PrismaCinemaRepository,
     },
-    // Room Use Cases
     CreateRoomUseCase,
     ListRoomsUseCase,
     GetRoomUseCase,
@@ -57,7 +58,6 @@ import { PrismaService } from './infrastructure/persistence/prisma.service';
       provide: RoomRepositoryPort,
       useClass: PrismaRoomRepository,
     },
-    // Seat Use Cases
     CreateSeatUseCase,
     ListSeatsUseCase,
     GetSeatUseCase,
@@ -67,12 +67,14 @@ import { PrismaService } from './infrastructure/persistence/prisma.service';
       provide: SeatRepositoryPort,
       useClass: PrismaSeatRepository,
     },
-    // Screening Use Cases
     CreateScreeningUseCase,
     ListScreeningsUseCase,
     GetScreeningUseCase,
     DeleteScreeningUseCase,
     UpdateScreeningUseCase,
+    GetScreeningsByFilmUseCase,
+    GetScreeningsByRoomUseCase,
+    CheckRoomAvailabilityUseCase,
     {
       provide: ScreeningRepositoryPort,
       useClass: PrismaScreeningRepository,
