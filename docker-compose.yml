@@ -1,30 +1,15 @@
-# docker-compose.yml
+name: microservices
+include:
+  - path: ./auth-back/docker-compose.yml
+    env_file: ./auth-back/.env
+  - path: ./film-microservice/docker-compose.yml
+    env_file: ./film-microservice/.env
+  - path: ./cinema-microservice/docker-compose.yml
+    env_file: ./cinema-microservice/.env
+  - path: ./booking-microservice/docker-compose.yml
+    env_file: ./film-microservice/.env
 
-services:
-  postgres:
-    image: postgres:13.5
-    restart: always
-    environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-      - POSTGRES_DB=auth-microservices
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    ports:
-      - "5431:5432"
-
-  booking:
-    build:
-      context: ./booking-microservice
-      dockerfile: Dockerfile
-    container_name: booking-microservice
-    restart: unless-stopped
-    environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres:5432/booking-microservice?schema=public
-    depends_on:
-      - postgres
-    ports:
-      - "3003:3000"
-
-volumes:
-  postgres:
+# Optional: Define a shared network so they can talk to each other
+networks:
+  default:
+    name: microservices-network

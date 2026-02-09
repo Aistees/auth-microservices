@@ -1,8 +1,5 @@
-# docker-compose.yml
-
-version: "3.8"
 services:
-  postgres:
+  booking-db:
     image: postgres:13.5
     restart: always
     environment:
