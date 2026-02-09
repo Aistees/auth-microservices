@@ -8,6 +8,7 @@ include:
     env_file: ./cinema-microservice/.env
   - path: ./booking-microservice/docker-compose.yml
     env_file: ./film-microservice/.env
+  - path: ./api-gateway/docker-compose.yml
 
 # Optional: Define a shared network so they can talk to each other
 networks:

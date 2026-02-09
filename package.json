@@ -1,0 +1,11 @@
+﻿{
+  "name": "microservices-workspace",
+  "version": "1.0.0",
+  "description": "BOM fixer wrapper for microservices",
+  "scripts": {
+    "bom:fix": "node scripts/fix-bom-json.mjs",
+    "dev": "npm run bom:check && echo '✅ Ready for dev!'"
+  },
+  "devDependencies": {
+  }
+}

@@ -28,6 +28,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3002);
+  console.log(`Cinema Microservice running on port ${process.env.PORT ?? 3002}`);
 }
 bootstrap();
