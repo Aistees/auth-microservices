@@ -1,16 +1,159 @@
-name: microservices
-include:
-  - path: ./auth-back/docker-compose.yml
-    env_file: ./auth-back/.env
-  - path: ./film-microservice/docker-compose.yml
-    env_file: ./film-microservice/.env
-  - path: ./cinema-microservice/docker-compose.yml
-    env_file: ./cinema-microservice/.env
-  - path: ./booking-microservice/docker-compose.yml
-    env_file: ./film-microservice/.env
-  - path: ./api-gateway/docker-compose.yml
+# name: microservices
+# include:
+#   - path: ./auth-back/docker-compose.yml
+#     env_file: ./auth-back/.env
+#   - path: ./film-microservice/docker-compose.yml
+#     env_file: ./film-microservice/.env
+#   - path: ./cinema-microservice/docker-compose.yml
+#     env_file: ./cinema-microservice/.env
+#   - path: ./booking-microservice/docker-compose.yml
+#     env_file: ./film-microservice/.env
+#   - path: ./api-gateway/docker-compose.yml
 
-# Optional: Define a shared network so they can talk to each other
+# networks:
+#   default:
+#     name: microservices-network
 networks:
-  default:
-    name: microservices-network
+  app-network:
+    driver: bridge
+
+services:
+  # ==========================================
+  # 1. API GATEWAY
+  # ==========================================
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      # L'URL des autres services (interne Docker)
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - CINEMA_SERVICE_URL=http://cinema-service:3002
+      - FILM_SERVICE_URL=http://film-service:3003
+      - BOOKING_SERVICE_URL=http://booking-service:3004
+    networks:
+      - app-network
+    depends_on:
+      - auth-service
+      - cinema-service
+      - film-service
+      - booking-service
+
+  # ==========================================
+  # 2. AUTH SERVICE & DB
+  # ==========================================
+  auth-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth-db
+    ports:
+      - "5431:5432" # Port Externe 5432
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  auth-service:
+    build: ./auth-back
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://user:password@auth-db:5432/auth-db?schema=public
+      - PORT=3001
+    depends_on:
+      - auth-db
+    networks:
+      - app-network
+
+  # ==========================================
+  # 3. CINEMA SERVICE & DB
+  # ==========================================
+  cinema-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cinema-db
+    ports:
+      - "5434:5432" # Port Externe 5434 (pour éviter conflit)
+    volumes:
+      - cinema_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  cinema-service:
+    build: ./cinema-microservice
+    ports:
+      - "3002:3002"
+    environment:
+      - DATABASE_URL=postgresql://user:password@cinema-db:5432/cinema-db?schema=public
+      - PORT=3002
+    depends_on:
+      - cinema-db
+    networks:
+      - app-network
+
+  # ==========================================
+  # 4. FILM SERVICE & DB
+  # ==========================================
+  film-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: film-db
+    ports:
+      - "5433:5432" # Port Externe 5433
+    volumes:
+      - film_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  film-service:
+    build: ./film-microservice
+    ports:
+      - "3003:3003"
+    environment:
+      - DATABASE_URL=postgresql://user:password@film-db:5432/film-db?schema=public
+      - PORT=3003
+    depends_on:
+      - film-db
+    networks:
+      - app-network
+
+  # ==========================================
+  # 5. BOOKING SERVICE & DB
+  # ==========================================
+  booking-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: booking-db
+    ports:
+      - "5435:5432" # Port Externe 5435
+    volumes:
+      - booking_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  booking-service:
+    build: ./booking-microservice
+    ports:
+      - "3004:3004"
+    environment:
+      - DATABASE_URL=postgresql://user:password@booking-db:5432/booking-db?schema=public
+      - PORT=3004
+    depends_on:
+      - booking-db
+    networks:
+      - app-network
+
+volumes:
+  auth_data:
+  cinema_data:
+  film_data:
+  booking_data:
