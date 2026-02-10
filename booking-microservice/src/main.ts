@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Booking Microservice')
     .setDescription('The Booking API based on Clean Architecture')
     .setVersion('1.0')
+    .addServer('/bookings')
     .addBearerAuth({
       type: 'http', 
         scheme: 'bearer', 

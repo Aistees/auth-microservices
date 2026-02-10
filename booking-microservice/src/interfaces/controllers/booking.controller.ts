@@ -8,7 +8,7 @@ import { Booking } from '../../domain/entities/booking.entity';
 import { CreateBookingDto } from '../dtos/create-booking.dto';
 
 @ApiTags('Bookings')
-@Controller('bookings')
+@Controller()
 export class BookingController {
   constructor(
     private readonly createBooking: CreateBookingUseCase,
