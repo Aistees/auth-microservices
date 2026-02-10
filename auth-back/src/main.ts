@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle('Auth Microservice')
     .setDescription('The Authentication API based on Clean Architecture')
     .setVersion('1.0')
+    .addServer('/auth')
     .addBearerAuth({
       type: 'http', 
         scheme: 'bearer', 

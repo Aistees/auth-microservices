@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, HttpCode, HttpStatus, UnauthorizedException, Param, Put, Req, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiUnauthorizedResponse, ApiForbiddenResponse, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 // Use Cases
@@ -33,7 +33,7 @@ import { RefreshtokenResponseDto } from '../dtos/refresh-token.response.dto';
 
 
 @ApiTags('api')
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
@@ -48,7 +48,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user and return tokens' })
   @ApiResponse({ status: 200, type: AuthResponseDto })
-  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  @ApiForbiddenResponse({ description: 'You need an admin account to create one' })
+  @ApiUnprocessableEntityResponse({description:'Token might be missing or is incorrecté'})
   async login(@Body() body: LoginRequestDto): Promise<AuthResponseDto> {
     const command = new LoginCommand(body.login, body.password);
 
