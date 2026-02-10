@@ -4,19 +4,20 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors(); // Toujours utile pour le Frontend
 
-  // Default to localhost if env vars are not set
-  const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
-  const CINEMA_SERVICE_URL = process.env.CINEMA_SERVICE_URL || 'http://localhost:3002';
-  const FILM_SERVICE_URL = process.env.FILM_SERVICE_URL || 'http://localhost:3003';
-  const BOOKING_SERVICE_URL = process.env.BOOKING_SERVICE_URL || 'http://localhost:3004';
+  // --- CONFIGURATION DES URLS CIBLES ---
+  const AUTH_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
+  const CINEMA_URL = process.env.CINEMA_SERVICE_URL || 'http://localhost:3002';
+  const FILM_URL = process.env.FILM_SERVICE_URL || 'http://localhost:3003';
+  const BOOKING_URL = process.env.BOOKING_SERVICE_URL || 'http://localhost:3004';
 
-  // Proxy configuration
+  // --- CONFIGURATION DU ROUTAGE (PROXY) ---
   const services = [
-    { route: '/auth', target: AUTH_SERVICE_URL },
-    { route: '/cinemas', target: CINEMA_SERVICE_URL },
-    { route: '/films', target: FILM_SERVICE_URL },
-    { route: '/bookings', target: BOOKING_SERVICE_URL },
+    { route: '/auth', target: AUTH_URL },
+    { route: '/cinemas', target: CINEMA_URL },
+    { route: '/films', target: FILM_URL },
+    { route: '/bookings', target: BOOKING_URL },
   ];
 
   services.forEach(({ route, target }) => {
@@ -26,17 +27,15 @@ async function bootstrap() {
         target,
         changeOrigin: true,
         pathRewrite: {
-          [`^${route}`]: '',
+          [`^${route}`]: '', // On enlève le préfixe (/auth -> /)
         },
       }),
     );
   });
 
+  // On écoute sur le port 3000
   await app.listen(3000);
-  console.log('API Gateway running on port 3000');
-  console.log(`Proxying /auth -> ${AUTH_SERVICE_URL}`);
-  console.log(`Proxying /cinemas -> ${CINEMA_SERVICE_URL}`);
-  console.log(`Proxying /films -> ${FILM_SERVICE_URL}`);
-  console.log(`Proxying /bookings -> ${BOOKING_SERVICE_URL}`);
+  console.log(`🚀 API Gateway active sur: http://localhost:3000`);
+  console.log(`🔀 Les routes sont redirigées vers 3001, 3002, 3003, 3004`);
 }
 bootstrap();
