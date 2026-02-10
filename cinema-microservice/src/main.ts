@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Cinema Microservice')
     .setDescription('The Cinema Management API based on Clean Architecture')
     .setVersion('1.0')
+    .addServer('/cinemas')
     .addBearerAuth({
       type: 'http', 
         scheme: 'bearer', 

@@ -11,7 +11,7 @@ import { CreateCinemaCommand } from '../../application/commands/create-cinema.co
 import { UpdateCinemaCommand } from '../../application/commands/update-cinema.command';
 
 @ApiTags('Cinemas')
-@Controller('cinemas')
+@Controller()
 export class CinemaController {
   constructor(
     private readonly createCinemaUseCase: CreateCinemaUseCase,
@@ -25,10 +25,8 @@ export class CinemaController {
   @ApiOperation({ summary: 'Create a new cinema' })
   @ApiResponse({ status: 201, description: 'The cinema has been successfully created.' })
   async create(@Body() dto: CreateCinemaDto) {
-    // Map DTO -> Command
     const command = new CreateCinemaCommand(dto.name, dto.city, dto.address);
     
-    // Execute
     return this.createCinemaUseCase.execute(command);
   }
 
