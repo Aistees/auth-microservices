@@ -17,7 +17,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3003);
+  await app.listen(3003, '0.0.0.0');
   console.log('Film Microservice running on port 3003');
   console.log('Swagger documentation available at http://localhost:3003/api');
 }

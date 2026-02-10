@@ -3,9 +3,6 @@ networks:
     driver: bridge
 
 services:
-  # ==========================================
-  # 1. API GATEWAY
-  # ==========================================
   api-gateway:
     build: ./api-gateway
     ports:
@@ -25,9 +22,6 @@ services:
       - film-service
       - booking-service
 
-  # ==========================================
-  # 2. AUTH SERVICE & DB
-  # ==========================================
   auth-db:
     image: postgres:13
     environment:
@@ -35,7 +29,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: auth-db
     ports:
-      - "5431:5432" # Port Externe 5432
+      - "5431:5432"
     volumes:
       - auth_data:/var/lib/postgresql/data
     networks:
@@ -53,9 +47,6 @@ services:
     networks:
       - app-network
 
-  # ==========================================
-  # 3. CINEMA SERVICE & DB
-  # ==========================================
   cinema-db:
     image: postgres:13
     environment:
@@ -63,7 +54,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: cinema-db
     ports:
-      - "5434:5432" # Port Externe 5434 (pour éviter conflit)
+      - "5434:5432"
     volumes:
       - cinema_data:/var/lib/postgresql/data
     networks:
@@ -81,9 +72,6 @@ services:
     networks:
       - app-network
 
-  # ==========================================
-  # 4. FILM SERVICE & DB
-  # ==========================================
   film-db:
     image: postgres:13
     environment:
@@ -91,7 +79,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: film-db
     ports:
-      - "5433:5432" # Port Externe 5433
+      - "5433:5432"
     volumes:
       - film_data:/var/lib/postgresql/data
     networks:
@@ -109,9 +97,6 @@ services:
     networks:
       - app-network
 
-  # ==========================================
-  # 5. BOOKING SERVICE & DB
-  # ==========================================
   booking-db:
     image: postgres:13
     environment:
@@ -119,7 +104,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: booking-db
     ports:
-      - "5435:5432" # Port Externe 5435
+      - "5435:5432"
     volumes:
       - booking_data:/var/lib/postgresql/data
     networks:
