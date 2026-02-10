@@ -9,7 +9,7 @@ import { CreateFilmDto } from '../dtos/create-film.dto';
 import { UpdateFilmDto } from '../dtos/update-film.dto';
 
 @ApiTags('Films')
-@Controller('films')
+@Controller()
 export class FilmController {
   constructor(
     private readonly createFilmUseCase: CreateFilmUseCase,

@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('Film Microservice')
     .setDescription('Film management API for cinema booking system')
     .setVersion('1.0.0')
+    .addServer('/films')
     .addTag('Films', 'Film management endpoints')
     .build();
 
