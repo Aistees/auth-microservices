@@ -1,18 +1,3 @@
-# name: microservices
-# include:
-#   - path: ./auth-back/docker-compose.yml
-#     env_file: ./auth-back/.env
-#   - path: ./film-microservice/docker-compose.yml
-#     env_file: ./film-microservice/.env
-#   - path: ./cinema-microservice/docker-compose.yml
-#     env_file: ./cinema-microservice/.env
-#   - path: ./booking-microservice/docker-compose.yml
-#     env_file: ./film-microservice/.env
-#   - path: ./api-gateway/docker-compose.yml
-
-# networks:
-#   default:
-#     name: microservices-network
 networks:
   app-network:
     driver: bridge

@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "microservices-workspace",
   "version": "1.0.0",
   "description": "BOM fixer wrapper for microservices",
@@ -6,6 +6,9 @@
     "bom:fix": "node scripts/fix-bom-json.mjs",
     "dev": "npm run bom:check && echo '✅ Ready for dev!'"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@nestjs/swagger": "^11.2.6",
+    "api-gateway": "^1.0.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }
